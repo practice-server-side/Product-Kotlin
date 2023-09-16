@@ -13,11 +13,11 @@ data class CustomUserDetails(
     }
 
     override fun getPassword(): String {
-        return this.password
+        return this.loginPassword
     }
 
     override fun getUsername(): String {
-        return this.username
+        return this.loginId
     }
 
     override fun isAccountNonExpired(): Boolean {

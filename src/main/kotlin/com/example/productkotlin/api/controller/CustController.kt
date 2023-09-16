@@ -51,6 +51,9 @@ class CustController(
         return ResponseEntity.created(selfLink).build()
     }
 
+    /**
+     * 로그인
+     */
     @PostMapping("/login")
     fun custLogin(
         @RequestBody request: CustLoginRequestDto

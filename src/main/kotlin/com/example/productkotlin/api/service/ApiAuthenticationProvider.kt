@@ -17,7 +17,7 @@ class ApiAuthenticationProvider(
         val loginPassword = authentication.credentials as String
 
         val user: CustomUserDetails = customUserDetailsService.loadUserByUsername(loginId) as CustomUserDetails
-        if (!passwordEncoder.matches(loginPassword, user.password)) {
+        if (!passwordEncoder.matches(loginPassword, user.loginPassword)) {
             throw IllegalAccessError()
         }
 
