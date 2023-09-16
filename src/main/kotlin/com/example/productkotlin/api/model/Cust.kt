@@ -5,7 +5,7 @@ import lombok.Builder
 
 @Entity
 @Builder
-data class Cust(
+data class Cust (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private var custId: Long? = null,
