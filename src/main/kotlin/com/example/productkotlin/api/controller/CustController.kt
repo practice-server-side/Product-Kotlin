@@ -2,8 +2,11 @@ package com.example.productkotlin.api.controller
 
 import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.CustLoginRequestDto
+import com.example.productkotlin.api.dto.CustLoginResponseDto
 import com.example.productkotlin.api.model.Cust
+import com.example.productkotlin.api.model.CustSession
 import com.example.productkotlin.api.repository.CustRepository
+import com.example.productkotlin.api.repository.CustSessionRepository
 import com.example.productkotlin.api.service.ApiAuthenticationProvider
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -24,7 +27,8 @@ import java.util.*
 class CustController(
     private val authenticationManager: ApiAuthenticationProvider,
     private val custRepository: CustRepository,
-    private val passwordEncoder: PasswordEncoder
+    private val passwordEncoder: PasswordEncoder,
+    private val custSessionRepository: CustSessionRepository,
 ) {
 
     /**
@@ -65,13 +69,12 @@ class CustController(
 
         SecurityContextHolder.getContext().authentication = authentication
 
-//        val newData: CustSession = CustSession.builder()
-//            .sessionId(UUID.randomUUID().toString())
-//            .custId(authentication.credentials as Long)
-//            .build()
-//
-//        custSessionRepository.save(newData)
+        val newData = CustSession(
+            sessionId = UUID.randomUUID().toString(),
+            custId = authentication.credentials as Long)
 
-        return ResponseEntity.ok("세션 값 요청하기")
+        custSessionRepository.save(newData)
+
+        return ResponseEntity.ok(CustLoginResponseDto(sessionId = newData.sessionId))
     }
 }
