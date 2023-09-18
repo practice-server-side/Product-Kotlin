@@ -8,7 +8,7 @@ import jakarta.persistence.*
 data class Mall (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var mallId: Long,
+    var mallId: Long? = null,
 
     @Column(nullable = false)
     var mallName: String,

@@ -8,6 +8,7 @@ import com.example.productkotlin.auth.api.model.CustSession
 import com.example.productkotlin.auth.api.repository.CustRepository
 import com.example.productkotlin.auth.api.repository.CustSessionRepository
 import com.example.productkotlin.auth.api.service.ApiAuthenticationProvider
+import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -37,7 +38,7 @@ class CustController(
     @PostMapping("/join")
     @Transactional
     fun custJoin(
-        @RequestBody request: CustJoinRequestDto
+        @Valid @RequestBody request: CustJoinRequestDto
     ): ResponseEntity<Any> {
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
@@ -60,7 +61,7 @@ class CustController(
      */
     @PostMapping("/login")
     fun custLogin(
-        @RequestBody request: CustLoginRequestDto
+        @Valid @RequestBody request: CustLoginRequestDto
     ): ResponseEntity<Any> {
 
         val authentication: Authentication = authenticationManager.authenticate(
