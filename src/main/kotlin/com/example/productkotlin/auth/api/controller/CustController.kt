@@ -1,13 +1,13 @@
-package com.example.productkotlin.api.controller
+package com.example.productkotlin.auth.api.controller
 
-import com.example.productkotlin.api.dto.CustJoinRequestDto
-import com.example.productkotlin.api.dto.CustLoginRequestDto
-import com.example.productkotlin.api.dto.CustLoginResponseDto
-import com.example.productkotlin.api.model.Cust
-import com.example.productkotlin.api.model.CustSession
-import com.example.productkotlin.api.repository.CustRepository
-import com.example.productkotlin.api.repository.CustSessionRepository
-import com.example.productkotlin.api.service.ApiAuthenticationProvider
+import com.example.productkotlin.auth.api.dto.CustJoinRequestDto
+import com.example.productkotlin.auth.api.dto.CustLoginRequestDto
+import com.example.productkotlin.auth.api.dto.CustLoginResponseDto
+import com.example.productkotlin.auth.api.model.Cust
+import com.example.productkotlin.auth.api.model.CustSession
+import com.example.productkotlin.auth.api.repository.CustRepository
+import com.example.productkotlin.auth.api.repository.CustSessionRepository
+import com.example.productkotlin.auth.api.service.ApiAuthenticationProvider
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication

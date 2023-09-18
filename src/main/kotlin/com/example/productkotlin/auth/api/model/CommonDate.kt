@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.model
+package com.example.productkotlin.auth.api.model
 
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners

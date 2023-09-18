@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.dto
+package com.example.productkotlin.auth.api.dto
 
 data class CustLoginRequestDto (
     val loginId: String,

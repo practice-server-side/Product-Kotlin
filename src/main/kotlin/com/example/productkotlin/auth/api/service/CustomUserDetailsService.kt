@@ -1,8 +1,8 @@
-package com.example.productkotlin.api.service
+package com.example.productkotlin.auth.api.service
 
-import com.example.productkotlin.api.model.Cust
-import com.example.productkotlin.api.model.CustomUserDetails
-import com.example.productkotlin.api.repository.CustRepository
+import com.example.productkotlin.auth.api.model.Cust
+import com.example.productkotlin.auth.api.model.CustomUserDetails
+import com.example.productkotlin.auth.api.repository.CustRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException

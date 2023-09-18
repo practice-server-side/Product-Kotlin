@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.model
+package com.example.productkotlin.auth.api.model
 
 import org.springframework.data.redis.core.RedisHash
 import org.springframework.data.annotation.Id

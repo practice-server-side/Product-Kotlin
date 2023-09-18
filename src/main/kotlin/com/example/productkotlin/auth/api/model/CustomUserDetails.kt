@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.model
+package com.example.productkotlin.auth.api.model
 
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails

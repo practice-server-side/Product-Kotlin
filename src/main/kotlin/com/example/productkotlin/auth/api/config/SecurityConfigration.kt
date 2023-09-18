@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.config
+package com.example.productkotlin.auth.api.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
