@@ -44,10 +44,10 @@ class CustController(
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
         val newData = Cust(
-            loginId = request.loginId,
-            loginPassword = passwordEncoder.encode(request.loginPassword),
-            custName = request.userName,
-            custPhone = request.userPhone,
+            loginId = request.loginId!!,
+            loginPassword = passwordEncoder.encode(request.loginPassword!!),
+            custName = request.userName!!,
+            custPhone = request.userPhone!!,
             custKey = UUID.randomUUID().toString()
         )
 

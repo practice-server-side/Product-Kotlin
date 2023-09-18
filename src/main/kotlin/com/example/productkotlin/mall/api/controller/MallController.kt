@@ -31,7 +31,7 @@ class MallController (
     ): ResponseEntity<Any> {
 
         val newData = Mall(
-            mallName = request.mallName,
+            mallName = request.mallName!!,
             mallKey = UUID.randomUUID().toString(),
             cust = currentCust
         )
