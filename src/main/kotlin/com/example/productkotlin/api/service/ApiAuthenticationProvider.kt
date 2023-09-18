@@ -1,6 +1,6 @@
-package com.example.productkotlin.auth.api.service
+package com.example.productkotlin.api.service
 
-import com.example.productkotlin.auth.api.model.CustomUserDetails
+import com.example.productkotlin.api.model.CustomUserDetails
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication

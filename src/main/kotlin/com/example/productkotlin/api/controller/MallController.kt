@@ -1,11 +1,11 @@
-package com.example.productkotlin.mall.api.controller
+package com.example.productkotlin.api.controller
 
-import com.example.productkotlin.auth.api.model.Cust
-import com.example.productkotlin.auth.api.repository.CustRepository
-import com.example.productkotlin.mall.api.dto.MallRegisterRequestDto
-import com.example.productkotlin.mall.api.dto.MallRegisterResponseDto
-import com.example.productkotlin.mall.api.model.Mall
-import com.example.productkotlin.mall.api.repository.MallRepository
+import com.example.productkotlin.api.model.Cust
+import com.example.productkotlin.api.repository.CustRepository
+import com.example.productkotlin.api.dto.MallRegisterRequestDto
+import com.example.productkotlin.api.dto.MallRegisterResponseDto
+import com.example.productkotlin.api.model.Mall
+import com.example.productkotlin.api.repository.MallRepository
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping

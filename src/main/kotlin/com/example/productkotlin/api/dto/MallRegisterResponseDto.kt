@@ -1,4 +1,4 @@
-package com.example.productkotlin.mall.api.dto
+package com.example.productkotlin.api.dto
 
 data class MallRegisterResponseDto (
     val mallId: Long?,

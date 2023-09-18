@@ -1,6 +1,6 @@
-package com.example.productkotlin.mall.api.repository
+package com.example.productkotlin.api.repository
 
-import com.example.productkotlin.mall.api.model.Mall
+import com.example.productkotlin.api.model.Mall
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MallRepository : JpaRepository<Mall, Long> {
