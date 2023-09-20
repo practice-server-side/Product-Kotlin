@@ -1,4 +1,4 @@
-package com.example.productkotlin.config.handler
+package com.example.productkotlin.config.exception
 
 import com.example.productkotlin.config.dto.ErrorDetails
 import org.springframework.http.HttpStatus

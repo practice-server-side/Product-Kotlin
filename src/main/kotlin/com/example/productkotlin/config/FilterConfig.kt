@@ -1,7 +1,6 @@
-package com.example.productkotlin.config.handler
+package com.example.productkotlin.config
 
 import com.example.productkotlin.api.repository.CustSessionRepository
-import com.example.productkotlin.config.AuthFilter
 import org.springframework.boot.web.servlet.FilterRegistrationBean
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
