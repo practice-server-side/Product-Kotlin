@@ -24,7 +24,7 @@ import java.net.URI
 import java.util.*
 
 @RestController
-@RequestMapping("/api/cust")
+@RequestMapping("/api/noch/cust")
 class CustController(
     private val authenticationManager: ApiAuthenticationProvider,
     private val custRepository: CustRepository,

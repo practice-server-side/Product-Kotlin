@@ -28,15 +28,4 @@ class GlobalExceptionHandler {
         )
     }
 
-    @ExceptionHandler(NotFoundException::class)
-    fun notFoundException(code: String, message: String): ResponseEntity<Any> {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-            ErrorDetails(
-                status = 404,
-                errorCode = code,
-                errorMessage = message,
-                timeStamp = LocalDateTime.now().toString()
-            )
-        )
-    }
 }

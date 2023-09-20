@@ -7,6 +7,7 @@ import com.example.productkotlin.api.model.Mall
 import com.example.productkotlin.api.repository.MallRepository
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
+import jakarta.annotation.Nullable
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
@@ -17,7 +18,7 @@ import java.util.NoSuchElementException
 import java.util.UUID
 
 @RestController
-@RequestMapping("/api/mall")
+@RequestMapping("/api/ch/mall")
 class MallController (
     private val mallRepository: MallRepository,
     private val custRepository: CustRepository,
