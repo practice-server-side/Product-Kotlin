@@ -1,7 +1,6 @@
 package com.example.productkotlin.config.handler
 
 import com.example.productkotlin.config.dto.ErrorDetails
-import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException

@@ -3,7 +3,6 @@ package com.example.productkotlin.api.model
 import jakarta.persistence.Column
 import jakarta.persistence.EntityListeners
 import jakarta.persistence.MappedSuperclass
-import lombok.Data
 import lombok.NoArgsConstructor
 import org.springframework.data.annotation.CreatedDate
 import org.springframework.data.annotation.LastModifiedDate

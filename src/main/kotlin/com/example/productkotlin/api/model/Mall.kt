@@ -1,7 +1,5 @@
 package com.example.productkotlin.api.model
 
-import com.example.productkotlin.api.model.CommonDate
-import com.example.productkotlin.api.model.Cust
 import jakarta.persistence.*
 
 @Entity
