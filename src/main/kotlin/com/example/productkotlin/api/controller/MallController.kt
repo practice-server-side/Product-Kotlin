@@ -32,7 +32,7 @@ class MallController (
     ): ResponseEntity<Any> {
 
         val requestCust = custRepository.findById(user.custId)
-            .orElseThrow { NoSuchElementException("") }
+            .orElseThrow { NoSuchElementException("회원을 찾을 수 업습니다.") }
 
         val newData = Mall(
             mallName = request.mallName!!,
@@ -46,4 +46,6 @@ class MallController (
             MallRegisterResponseDto(mallId = newData.mallId)
         )
     }
+
+
 }

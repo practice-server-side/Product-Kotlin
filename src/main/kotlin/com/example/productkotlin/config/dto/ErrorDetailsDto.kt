@@ -3,7 +3,7 @@ package com.example.productkotlin.config.dto
 import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ErrorDetails (
+data class ErrorDetailsDto (
     var status: Int,
     var errorCode: String? = null,
     var errorMessage: String,
