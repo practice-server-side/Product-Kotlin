@@ -10,4 +10,6 @@ interface MallRepository : JpaRepository<Mall, Long> {
 
     @EntityGraph(attributePaths = ["cust"])
     fun findByMallId(mallId: Long): Optional<Mall>
+
+    fun findByMallKey(mallKey: String): Optional<Mall>
 }
