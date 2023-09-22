@@ -1,5 +1,6 @@
 package com.example.productkotlin.api.controller
 
+import com.example.productkotlin.api.dto.CustCheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.CustLoginRequestDto
 import com.example.productkotlin.api.dto.CustLoginResponseDto
@@ -16,6 +17,8 @@ import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -32,6 +35,18 @@ class CustController(
     private val passwordEncoder: PasswordEncoder,
     private val custSessionRepository: CustSessionRepository,
 ) {
+
+    /**
+     * 회원 로그인 아이디 중복체크
+     */
+    @GetMapping("/{loginId}")
+    fun checkLoginId(
+        @PathVariable(value = "loginId") requestLoginId: String
+    ): ResponseEntity<Any> {
+        return ResponseEntity.ok(
+            CustCheckLoginIdResponseDto(exists = custRepository.existsByLoginId(requestLoginId))
+        )
+    }
 
     /**
      * 회원가입
