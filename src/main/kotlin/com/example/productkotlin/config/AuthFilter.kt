@@ -31,7 +31,6 @@ class AuthFilter(
         if (requestSessionId == null) {
 
             val responseDto = ErrorDetailsDto(
-                status = 403,
                 errorMessage = "로그인이 필요한 요청입니다.",
                 timeStamp = LocalDateTime.now().toString()
             )
@@ -44,7 +43,6 @@ class AuthFilter(
 
         if (custSession.isEmpty) {
             val responseDto = ErrorDetailsDto(
-                status = 403,
                 errorMessage = "로그인이 필요한 요청입니다.",
                 timeStamp = LocalDateTime.now().toString()
             )
@@ -64,7 +62,6 @@ class AuthFilter(
         response: HttpServletResponse,
         responseDto: ErrorDetailsDto
     ) {
-        response.status = responseDto.status
         response.contentType = "application/json;charset=UTF-8"
 
         response.writer.write(objectMapper.writeValueAsString(responseDto))

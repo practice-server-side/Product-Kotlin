@@ -94,9 +94,16 @@ class CustController(
 
         SecurityContextHolder.getContext().authentication = authentication
 
+        val custSession = custSessionRepository.findByCustId(authentication.credentials as Long)
+
+        if (custSession.isPresent) {
+            custSessionRepository.deleteById(custSession.get().sessionId)
+        }
+
         val newData = CustSession(
             sessionId = UUID.randomUUID().toString(),
-            custId = authentication.credentials as Long)
+            custId = authentication.credentials as Long
+        )
 
         custSessionRepository.save(newData)
 
