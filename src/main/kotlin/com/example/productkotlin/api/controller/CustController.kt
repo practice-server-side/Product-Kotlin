@@ -9,6 +9,7 @@ import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.CustSessionRepository
 import com.example.productkotlin.api.service.ApiAuthenticationProvider
 import jakarta.validation.Valid
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -43,8 +44,12 @@ class CustController(
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
+        if (custRepository.existsByLoginId(request.loginId!!)) {
+            throw DuplicateKeyException("이미 사용중인 아이디 입니다.")
+        }
+
         val newData = Cust(
-            loginId = request.loginId!!,
+            loginId = request.loginId,
             loginPassword = passwordEncoder.encode(request.loginPassword!!),
             custName = request.userName!!,
             custPhone = request.userPhone!!,
@@ -63,6 +68,10 @@ class CustController(
     fun custLogin(
         @Valid @RequestBody request: CustLoginRequestDto
     ): ResponseEntity<Any> {
+
+        if (!custRepository.existsByLoginId(request.loginId!!)) {
+            throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
+        }
 
         val authentication: Authentication = authenticationManager.authenticate(
             UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword)

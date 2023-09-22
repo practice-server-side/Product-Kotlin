@@ -1,6 +1,7 @@
 package com.example.productkotlin.config.exception
 
 import com.example.productkotlin.config.dto.ErrorDetailsDto
+import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.MethodArgumentNotValidException
@@ -21,7 +22,6 @@ class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
             ErrorDetailsDto(
-                status = 400,
                 errorMessage = errorMessage,
                 timeStamp = LocalDateTime.now().toString()
             )
@@ -35,7 +35,6 @@ class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
             ErrorDetailsDto(
-                status = 404,
                 errorMessage = errorMessage ?: "",
                 timeStamp = LocalDateTime.now().toString()
             )
@@ -49,12 +48,23 @@ class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
             ErrorDetailsDto(
-                status = 403,
                 errorMessage = errorMessage ?: "",
                 timeStamp = LocalDateTime.now().toString()
             )
         )
     }
 
+    @ExceptionHandler(DuplicateKeyException::class)
+    fun duplicateKeyException(ex: DuplicateKeyException): ResponseEntity<Any> {
+
+        val errorMessage = ex.message
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+            ErrorDetailsDto(
+                errorMessage = errorMessage ?: "",
+                timeStamp = LocalDateTime.now().toString()
+            )
+        )
+    }
 
 }

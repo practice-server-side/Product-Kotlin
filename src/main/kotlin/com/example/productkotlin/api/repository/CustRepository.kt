@@ -6,4 +6,6 @@ import java.util.*
 
 interface CustRepository : JpaRepository<Cust, Long> {
     fun findByLoginId(loginId: String): Optional<Cust>
+
+    fun existsByLoginId(loginId: String): Boolean
 }

@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class ErrorDetailsDto (
-    var status: Int,
     var errorCode: String? = null,
     var errorMessage: String,
     var path: String? = null,
