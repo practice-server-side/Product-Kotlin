@@ -3,11 +3,11 @@ package com.example.productkotlin.api.model
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 
-data class CustomUserDetails(
-    var custId: Long?,
+data class MallMemberCustomUserDetails(
+    var memberId: Long?,
     var loginId: String,
     var loginPassword: String,
-) : UserDetails {
+) : UserDetails{
     override fun getAuthorities(): List<SimpleGrantedAuthority> {
         return listOf(SimpleGrantedAuthority("ROLE_USER"))
     }
@@ -35,4 +35,5 @@ data class CustomUserDetails(
     override fun isEnabled(): Boolean {
         return true
     }
+
 }

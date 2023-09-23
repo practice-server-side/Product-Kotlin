@@ -4,7 +4,10 @@ import com.example.productkotlin.api.dto.MallMemberCreateRequestDto
 import com.example.productkotlin.api.model.MallMember
 import com.example.productkotlin.api.repository.MallMemberRepository
 import com.example.productkotlin.api.repository.MallRepository
+import com.example.productkotlin.api.service.MallMemberAuthenticationProvider
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.http.ResponseEntity
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -16,8 +19,11 @@ import java.util.NoSuchElementException
 @RestController
 @RequestMapping("/api/noch/mallMember")
 class MallMemberController(
-    val mallMemberRepository: MallMemberRepository,
-    val mallRepository: MallRepository,
+    @Qualifier("mallMemberAuthenticationProvider")
+    private val mallMemberAuthenticationProvider: MallMemberAuthenticationProvider,
+    private val mallMemberRepository: MallMemberRepository,
+    private val passwordEncoder: PasswordEncoder,
+    private val mallRepository: MallRepository,
 ) {
 
     /**
@@ -33,6 +39,8 @@ class MallMemberController(
             .orElseThrow {throw NoSuchElementException("존재하지 않는 몰입니다..")}
 
         val newData = MallMember(
+            loginId = request.loginId,
+            loginPassword = passwordEncoder.encode(request.loginPassword),
             memberName = request.memberName,
             mall = requestMall
         )

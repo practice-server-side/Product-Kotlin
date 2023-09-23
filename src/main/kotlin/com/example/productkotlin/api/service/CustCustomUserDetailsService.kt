@@ -1,7 +1,7 @@
 package com.example.productkotlin.api.service
 
 import com.example.productkotlin.api.model.Cust
-import com.example.productkotlin.api.model.CustomUserDetails
+import com.example.productkotlin.api.model.CustCustomUserDetails
 import com.example.productkotlin.api.repository.CustRepository
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 
 @Service
-class CustomUserDetailsService(
+class CustCustomUserDetailsService(
     private val custRepository: CustRepository
 ) : UserDetailsService {
 
@@ -19,7 +19,7 @@ class CustomUserDetailsService(
 
         try {
             if (loginId == cust.loginId) {
-                return CustomUserDetails(
+                return CustCustomUserDetails(
                     custId = cust.custId,
                     loginId = cust.loginId,
                     loginPassword = cust.loginPassword

@@ -8,8 +8,9 @@ import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.CustSession
 import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.CustSessionRepository
-import com.example.productkotlin.api.service.ApiAuthenticationProvider
+import com.example.productkotlin.api.service.CustAuthenticationProvider
 import jakarta.validation.Valid
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -30,7 +31,8 @@ import java.util.*
 @RestController
 @RequestMapping("/api/noch/cust")
 class CustController(
-    private val authenticationManager: ApiAuthenticationProvider,
+    @Qualifier("custAuthenticationProvider")
+    private val authenticationManager: CustAuthenticationProvider,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
     private val custSessionRepository: CustSessionRepository,
