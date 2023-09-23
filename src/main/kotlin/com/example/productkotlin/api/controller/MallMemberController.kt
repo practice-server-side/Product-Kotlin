@@ -7,6 +7,7 @@ import com.example.productkotlin.api.model.MallMember
 import com.example.productkotlin.api.repository.MallMemberRepository
 import com.example.productkotlin.api.repository.MallRepository
 import com.example.productkotlin.api.service.MallMemberAuthenticationProvider
+import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
@@ -36,7 +37,7 @@ class MallMemberController(
     @PostMapping("/{loginId}")
     fun checkMallMemberLoginId(
         @PathVariable(value = "loginId") requestLoginId: String,
-        @RequestBody request: MallMemberLoginIdCheckRequestDto,
+        @Valid @RequestBody request: MallMemberLoginIdCheckRequestDto,
     ): ResponseEntity<Any> {
 
         val requestMall = mallRepository.findByMallKey(request.mallKey!!)
@@ -52,7 +53,7 @@ class MallMemberController(
      */
     @PostMapping
     fun mallMemberJoin(
-        @RequestBody request: MallMemberRegisterRequestDto,
+        @Valid @RequestBody request: MallMemberRegisterRequestDto,
     ): ResponseEntity<Any> {
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
