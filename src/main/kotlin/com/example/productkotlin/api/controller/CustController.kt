@@ -1,6 +1,6 @@
 package com.example.productkotlin.api.controller
 
-import com.example.productkotlin.api.dto.CustCheckLoginIdResponseDto
+import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.CustLoginRequestDto
 import com.example.productkotlin.api.dto.CustLoginResponseDto
@@ -32,7 +32,7 @@ import java.util.*
 @RequestMapping("/api/noch/cust")
 class CustController(
     @Qualifier("custAuthenticationProvider")
-    private val authenticationManager: CustAuthenticationProvider,
+    private val custAuthenticationProvider: CustAuthenticationProvider,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
     private val custSessionRepository: CustSessionRepository,
@@ -42,11 +42,11 @@ class CustController(
      * 회원 로그인 아이디 중복체크
      */
     @GetMapping("/{loginId}")
-    fun checkLoginId(
+    fun checkCustLoginId(
         @PathVariable(value = "loginId") requestLoginId: String
     ): ResponseEntity<Any> {
         return ResponseEntity.ok(
-            CustCheckLoginIdResponseDto(exists = custRepository.existsByLoginId(requestLoginId))
+            CheckLoginIdResponseDto(exists = custRepository.existsByLoginId(requestLoginId))
         )
     }
 
@@ -90,7 +90,7 @@ class CustController(
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
         }
 
-        val authentication: Authentication = authenticationManager.authenticate(
+        val authentication: Authentication = custAuthenticationProvider.authenticate(
             UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword)
         )
 

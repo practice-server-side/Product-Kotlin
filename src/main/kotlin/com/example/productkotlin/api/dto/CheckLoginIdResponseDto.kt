@@ -1,5 +1,5 @@
 package com.example.productkotlin.api.dto
 
-data class CustCheckLoginIdResponseDto (
+data class CheckLoginIdResponseDto (
     val exists: Boolean
 )
