@@ -7,7 +7,5 @@ import java.util.Optional
 
 @Repository
 interface CustSessionRepository : CrudRepository<CustSession, String> {
-    fun existsByCustId(custId: Long): Boolean
-
     fun findByCustId(custId: Long): Optional<CustSession>
 }

@@ -1,5 +1,5 @@
 package com.example.productkotlin.api.dto
 
-data class CustLoginResponseDto (
+data class LoginResponseDto (
     var sessionId: String
 )

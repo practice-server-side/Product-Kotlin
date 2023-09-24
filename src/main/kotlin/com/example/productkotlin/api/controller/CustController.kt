@@ -3,7 +3,7 @@ package com.example.productkotlin.api.controller
 import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.LoginRequestDto
-import com.example.productkotlin.api.dto.CustLoginResponseDto
+import com.example.productkotlin.api.dto.LoginResponseDto
 import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.CustSession
 import com.example.productkotlin.api.repository.CustRepository
@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.transaction.annotation.Transactional
@@ -109,6 +108,6 @@ class CustController(
 
         custSessionRepository.save(newData)
 
-        return ResponseEntity.ok(CustLoginResponseDto(sessionId = newData.sessionId))
+        return ResponseEntity.ok(LoginResponseDto(newData.sessionId))
     }
 }

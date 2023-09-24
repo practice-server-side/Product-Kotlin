@@ -2,7 +2,9 @@ package com.example.productkotlin.api.controller
 
 import com.example.productkotlin.api.dto.*
 import com.example.productkotlin.api.model.MallMember
+import com.example.productkotlin.api.model.MallMemberSession
 import com.example.productkotlin.api.repository.MallMemberRepository
+import com.example.productkotlin.api.repository.MallMemberSessionRepository
 import com.example.productkotlin.api.repository.MallRepository
 import com.example.productkotlin.api.service.MallMemberAuthenticationProvider
 import jakarta.validation.Valid
@@ -21,12 +23,14 @@ import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.net.URI
 import java.util.NoSuchElementException
+import java.util.UUID
 
 @RestController
 @RequestMapping("/api/noch/mallMember")
 class MallMemberController(
     @Qualifier("mallMemberAuthenticationProvider")
     private val mallMemberAuthenticationProvider: MallMemberAuthenticationProvider,
+    private val mallMemberSessionRepository: MallMemberSessionRepository,
     private val mallMemberRepository: MallMemberRepository,
     private val passwordEncoder: PasswordEncoder,
     private val mallRepository: MallRepository,
@@ -100,11 +104,19 @@ class MallMemberController(
 
         SecurityContextHolder.getContext().authentication = authentication
 
+        val mallMemberSession = mallMemberSessionRepository.findByMemberId(authentication.credentials as Long)
 
+        if (mallMemberSession.isPresent) {
+            mallMemberSessionRepository.deleteById(mallMemberSession.get().sessionId)
+        }
 
-
-        return ResponseEntity.ok(
-            ""
+        val newData = MallMemberSession(
+            sessionId = UUID.randomUUID().toString(),
+            memberId = authentication.credentials as Long
         )
+
+        mallMemberSessionRepository.save(newData)
+
+        return ResponseEntity.ok(LoginResponseDto(newData.sessionId))
     }
 }
