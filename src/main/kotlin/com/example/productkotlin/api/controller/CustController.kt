@@ -2,7 +2,7 @@ package com.example.productkotlin.api.controller
 
 import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto
-import com.example.productkotlin.api.dto.CustLoginRequestDto
+import com.example.productkotlin.api.dto.LoginRequestDto
 import com.example.productkotlin.api.dto.CustLoginResponseDto
 import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.CustSession
@@ -71,7 +71,7 @@ class CustController(
             custName = request.userName!!,
             custPhone = request.userPhone!!,
             custKey = UUID.randomUUID().toString()
-        )
+         )
 
         custRepository.save(newData)
 
@@ -83,14 +83,14 @@ class CustController(
      */
     @PostMapping("/login")
     fun custLogin(
-        @Valid @RequestBody request: CustLoginRequestDto
+        @Valid @RequestBody request: LoginRequestDto
     ): ResponseEntity<Any> {
 
         if (!custRepository.existsByLoginId(request.loginId!!)) {
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
         }
 
-        val authentication: Authentication = custAuthenticationProvider.authenticate(
+        val authentication = custAuthenticationProvider.authenticate(
             UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword)
         )
 

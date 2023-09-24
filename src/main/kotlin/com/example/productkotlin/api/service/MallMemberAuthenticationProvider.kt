@@ -1,5 +1,6 @@
 package com.example.productkotlin.api.service
 
+import com.example.productkotlin.api.model.Mall
 import com.example.productkotlin.api.model.MallMemberCustomUserDetails
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.security.authentication.AuthenticationManager
@@ -14,11 +15,15 @@ class MallMemberAuthenticationProvider(
     private val mallMemberCustomUserDetailService: MallMemberCustomUserDetailService,
     private val passwordEncoder: PasswordEncoder,
 ) : AuthenticationManager {
-    override fun authenticate(authentication: Authentication): Authentication {
+    override fun authenticate(authentication: Authentication): Authentication? {
+        return null
+    }
+
+    fun authenticate(authentication: Authentication, mall: Mall): Authentication {
         val loginId = authentication.name
         val loginPassword = authentication.credentials as String
 
-        val user: MallMemberCustomUserDetails = mallMemberCustomUserDetailService.loadUserByUsername(loginId) as MallMemberCustomUserDetails
+        val user: MallMemberCustomUserDetails = mallMemberCustomUserDetailService.loadUserByUsername(loginId, mall) as MallMemberCustomUserDetails
 
         if (!passwordEncoder.matches(loginPassword, user.loginPassword)) {
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")

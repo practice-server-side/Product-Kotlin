@@ -1,8 +1,6 @@
 package com.example.productkotlin.api.controller
 
-import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
-import com.example.productkotlin.api.dto.MallMemberRegisterRequestDto
-import com.example.productkotlin.api.dto.MallMemberLoginIdCheckRequestDto
+import com.example.productkotlin.api.dto.*
 import com.example.productkotlin.api.model.MallMember
 import com.example.productkotlin.api.repository.MallMemberRepository
 import com.example.productkotlin.api.repository.MallRepository
@@ -11,7 +9,10 @@ import jakarta.validation.Valid
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
@@ -51,9 +52,9 @@ class MallMemberController(
     /**
      * 몰 회원가입
      */
-    @PostMapping
+    @PostMapping("/join")
     fun mallMemberJoin(
-        @Valid @RequestBody request: MallMemberRegisterRequestDto,
+        @Valid @RequestBody request: MallMemberJoinRequestDto,
     ): ResponseEntity<Any> {
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
@@ -75,5 +76,35 @@ class MallMemberController(
         mallMemberRepository.save(newData)
 
         return ResponseEntity.created(selfLink).build()
+    }
+
+    /**
+     * 몰 회원 로그인
+     */
+    @GetMapping("/login")
+    fun mallMemberLogin(
+        @Valid @RequestBody request: MallMemberLoginRequestDto
+    ): ResponseEntity<Any> {
+
+        val requestMall = mallRepository.findByMallKey(request.mallKey)
+            .orElseThrow { throw NoSuchElementException("존재하지 않는 몰입니다.") }
+
+        if (!mallMemberRepository.existsByLoginIdAndMall(request.loginRequestDto.loginId!!, requestMall)) {
+            throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
+        }
+
+        val authentication = mallMemberAuthenticationProvider.authenticate(
+            UsernamePasswordAuthenticationToken(request.loginRequestDto.loginId, request.loginRequestDto.loginPassword),
+            requestMall
+        )
+
+        SecurityContextHolder.getContext().authentication = authentication
+
+
+
+
+        return ResponseEntity.ok(
+            ""
+        )
     }
 }
