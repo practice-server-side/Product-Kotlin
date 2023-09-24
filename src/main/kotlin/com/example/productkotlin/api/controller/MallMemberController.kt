@@ -6,9 +6,8 @@ import com.example.productkotlin.api.model.MallMemberSession
 import com.example.productkotlin.api.repository.MallMemberRepository
 import com.example.productkotlin.api.repository.MallMemberSessionRepository
 import com.example.productkotlin.api.repository.MallRepository
-import com.example.productkotlin.api.service.MallMemberAuthenticationProvider
+import com.example.productkotlin.api.service.CustomAuthenticationManagerService
 import jakarta.validation.Valid
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -28,8 +27,7 @@ import java.util.UUID
 @RestController
 @RequestMapping("/api/noch/mallMember")
 class MallMemberController(
-    @Qualifier("mallMemberAuthenticationProvider")
-    private val mallMemberAuthenticationProvider: MallMemberAuthenticationProvider,
+    private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val mallMemberSessionRepository: MallMemberSessionRepository,
     private val mallMemberRepository: MallMemberRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -97,7 +95,7 @@ class MallMemberController(
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
         }
 
-        val authentication = mallMemberAuthenticationProvider.authenticate(
+        val authentication = customAuthenticationManagerService.authenticate(
             UsernamePasswordAuthenticationToken(request.loginRequestDto.loginId, request.loginRequestDto.loginPassword),
             requestMall
         )

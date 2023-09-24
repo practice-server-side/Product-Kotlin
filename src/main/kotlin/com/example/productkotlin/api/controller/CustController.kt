@@ -8,9 +8,8 @@ import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.CustSession
 import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.CustSessionRepository
-import com.example.productkotlin.api.service.CustAuthenticationProvider
+import com.example.productkotlin.api.service.CustomAuthenticationManagerService
 import jakarta.validation.Valid
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
@@ -30,8 +29,7 @@ import java.util.*
 @RestController
 @RequestMapping("/api/noch/cust")
 class CustController(
-    @Qualifier("custAuthenticationProvider")
-    private val custAuthenticationProvider: CustAuthenticationProvider,
+    private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
     private val custSessionRepository: CustSessionRepository,
@@ -89,7 +87,7 @@ class CustController(
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
         }
 
-        val authentication = custAuthenticationProvider.authenticate(
+        val authentication = customAuthenticationManagerService.authenticate(
             UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword)
         )
 
