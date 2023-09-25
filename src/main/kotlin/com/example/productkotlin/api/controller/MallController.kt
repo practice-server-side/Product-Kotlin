@@ -7,6 +7,7 @@ import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.Mall
 import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.MallRepository
+import com.example.productkotlin.api.service.MallService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
@@ -26,6 +27,7 @@ import kotlin.NoSuchElementException
 class MallController (
     private val mallRepository: MallRepository,
     private val custRepository: CustRepository,
+    private val mallService: MallService,
 ) {
 
     /**
@@ -62,12 +64,7 @@ class MallController (
         @PathVariable(value = "mallId") mallId: Long,
     ): ResponseEntity<Any> {
 
-        val requestMall: Mall = mallRepository.findByMallId(mallId)
-            .orElseThrow { NoSuchElementException("몰을 찾을 수 없습니다.") }
-
-        if (requestMall.cust.custId != user.custId) {
-            throw AuthenticationException("몰을 확인할 권한이 없습니다.")
-        }
+        val requestMall = mallService.validateMall(custId = user.custId, mallId = mallId)
 
         return ResponseEntity.ok(
             MallDetailResponseDto(
