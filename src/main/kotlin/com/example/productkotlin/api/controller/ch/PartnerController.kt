@@ -53,7 +53,7 @@ class PartnerController(
     }
 
     /**
-     * 몰의 파트너 리스트 조회
+     * 몰의 파트너 리스트 조회 TODO : 검색조건 및 페이징 처리
      */
     @GetMapping
     fun partnerList(
@@ -100,6 +100,7 @@ class PartnerController(
                 partnerId = requestMallPartner.partnerId!!,
                 partnerName = requestMallPartner.partnerName,
                 partnerCompanyNo = requestMallPartner.partnerCompanyNo,
+                mallId = requestMall.mallId!!,
                 mallName = requestMall.mallName,
             )
         )
