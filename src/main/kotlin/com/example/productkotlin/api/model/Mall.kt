@@ -17,4 +17,7 @@ data class Mall (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "custId", nullable = false)
     var cust: Cust,
+
+    @OneToMany(fetch = FetchType.LAZY)
+    var partners: List<Partner>? = null
 ) : CommonDate()

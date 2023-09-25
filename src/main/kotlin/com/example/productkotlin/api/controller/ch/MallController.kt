@@ -27,7 +27,7 @@ class MallController (
      * 몰 등록
      */
     @PostMapping
-    fun createMall(
+    fun mallRegister(
         @User user: CurrentCust,
         @Valid @RequestBody request: MallRegisterRequestDto,
     ): ResponseEntity<Any> {
@@ -52,7 +52,7 @@ class MallController (
      * 몰 상세내용 조회
      */
     @GetMapping("/{mallId}")
-    fun getMallDetail(
+    fun mallDetail(
         @User user: CurrentCust,
         @PathVariable(value = "mallId") mallId: Long,
     ): ResponseEntity<Any> {
