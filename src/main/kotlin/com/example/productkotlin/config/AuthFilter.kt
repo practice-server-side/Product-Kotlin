@@ -1,7 +1,9 @@
 package com.example.productkotlin.config
 
 import com.example.productkotlin.api.repository.CustSessionRepository
+import com.example.productkotlin.api.repository.MallMemberSessionRepository
 import com.example.productkotlin.config.dto.CurrentCust
+import com.example.productkotlin.config.dto.CurrentMember
 import com.example.productkotlin.config.dto.ErrorDetailsDto
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.servlet.FilterChain
@@ -11,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter
 import java.time.LocalDateTime
 
 class AuthFilter(
+    val mallMemberSessionRepository: MallMemberSessionRepository,
     val custSessionRepository: CustSessionRepository,
     val objectMapper: ObjectMapper,
 ) : OncePerRequestFilter() {
@@ -29,7 +32,6 @@ class AuthFilter(
         val requestSessionId = request.getHeader("Authorization")
 
         if (requestSessionId == null) {
-
             val responseDto = ErrorDetailsDto(
                 errorMessage = "로그인이 필요한 요청입니다.",
                 timeStamp = LocalDateTime.now().toString()
@@ -39,23 +41,43 @@ class AuthFilter(
             return
         }
 
-        val custSession = custSessionRepository.findById(requestSessionId)
+        if (uri.startsWith("/api/ch/mallMember")) {
+            val mallMemberSession = mallMemberSessionRepository.findById(requestSessionId)
 
-        if (custSession.isEmpty) {
-            val responseDto = ErrorDetailsDto(
-                errorMessage = "로그인이 필요한 요청입니다.",
-                timeStamp = LocalDateTime.now().toString()
-            )
+            if (mallMemberSession.isEmpty) {
+                val responseDto = ErrorDetailsDto(
+                    errorMessage = "로그인이 필요한 요청입니다.",
+                    timeStamp = LocalDateTime.now().toString()
+                )
 
-            errorHandler(response, responseDto)
-            return
+                errorHandler(response, responseDto)
+                return
+            }
+
+            val currentMember = CurrentMember(mallMemberSession.get().memberId)
+
+            request.setAttribute("currentMember", currentMember)
+
+            filterChain.doFilter(request, response)
+        } else {
+            val custSession = custSessionRepository.findById(requestSessionId)
+
+            if (custSession.isEmpty) {
+                val responseDto = ErrorDetailsDto(
+                    errorMessage = "로그인이 필요한 요청입니다.",
+                    timeStamp = LocalDateTime.now().toString()
+                )
+
+                errorHandler(response, responseDto)
+                return
+            }
+
+            val currentCust = CurrentCust(custSession.get().custId)
+
+            request.setAttribute("currentCust", currentCust)
+
+            filterChain.doFilter(request, response)
         }
-
-        val currentCust = CurrentCust(custSession.get().custId)
-
-        request.setAttribute("currentCust", currentCust)
-
-        filterChain.doFilter(request, response)
     }
 
     private fun errorHandler(
