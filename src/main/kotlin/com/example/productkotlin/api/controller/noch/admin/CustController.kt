@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.controller.noch
+package com.example.productkotlin.api.controller.noch.admin
 
 import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto

@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.controller.ch
+package com.example.productkotlin.api.controller.ch.admin
 
 import com.example.productkotlin.api.dto.MallDetailResponseDto
 import com.example.productkotlin.api.dto.MallRegisterRequestDto
