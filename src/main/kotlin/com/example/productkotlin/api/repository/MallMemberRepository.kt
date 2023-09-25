@@ -3,7 +3,7 @@ package com.example.productkotlin.api.repository
 import com.example.productkotlin.api.model.Mall
 import com.example.productkotlin.api.model.MallMember
 import org.springframework.data.jpa.repository.JpaRepository
-import java.util.Optional
+import java.util.*
 
 interface MallMemberRepository : JpaRepository<MallMember, Long>{
     fun existsByLoginIdAndMall(loginId: String, mall: Mall): Boolean

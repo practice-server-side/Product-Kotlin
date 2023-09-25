@@ -1,6 +1,5 @@
 package com.example.productkotlin.api.dto
 
-import com.example.productkotlin.api.model.Mall
 import jakarta.validation.constraints.NotBlank
 
 data class PartnerRegisterRequestDto (
