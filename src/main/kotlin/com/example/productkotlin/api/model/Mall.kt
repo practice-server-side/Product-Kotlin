@@ -18,6 +18,6 @@ data class Mall (
     @JoinColumn(name = "custId", nullable = false)
     var cust: Cust,
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "mall")
     var partners: List<Partner>? = null
 ) : CommonDate()
