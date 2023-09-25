@@ -9,4 +9,3 @@ data class PartnerListResponseDto(
         val partnerName: String,
     )
 }
-
