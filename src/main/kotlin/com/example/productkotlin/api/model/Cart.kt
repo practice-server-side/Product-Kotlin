@@ -6,7 +6,7 @@ import jakarta.persistence.*
 data class Cart (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var cartId: Long,
+    var cartId: Long? = null,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "memberId")
