@@ -1,8 +1,7 @@
 package com.example.productkotlin.api.controller.ch.client
 
 import com.example.productkotlin.api.dto.MallMemberDetailResponseDto
-import com.example.productkotlin.api.repository.MallMemberRepository
-import com.example.productkotlin.api.service.MallMemberService
+import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.Member
 import com.example.productkotlin.config.dto.CurrentMember
 import org.springframework.http.ResponseEntity
@@ -14,8 +13,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping("/api/ch/mallMember")
 class ClientMallMemberController (
-    private val mallMemberRepository: MallMemberRepository,
-    private val mallMemberService: MallMemberService,
+    private val noSuchExceptionService: NoSuchExceptionService,
 ) {
 
     /**
@@ -27,7 +25,7 @@ class ClientMallMemberController (
         @PathVariable(value = "memberId") requestMemberId: Long,
     ): ResponseEntity<Any> {
 
-        val requestMember = mallMemberService.validateMember(requestMemberId)
+        val requestMember = noSuchExceptionService.validateMember(requestMemberId)
 
         return ResponseEntity.ok(
             MallMemberDetailResponseDto(

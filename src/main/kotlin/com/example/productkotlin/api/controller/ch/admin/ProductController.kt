@@ -6,6 +6,7 @@ import com.example.productkotlin.api.model.Partner
 import com.example.productkotlin.api.model.Product
 import com.example.productkotlin.api.repository.ProductRepository
 import com.example.productkotlin.api.service.MallService
+import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
@@ -19,6 +20,7 @@ import java.net.URI
 class ProductController (
     private val mallService: MallService,
     private val productRepository: ProductRepository,
+    private val noSuchExceptionService: NoSuchExceptionService,
 ){
 
     /**
@@ -32,7 +34,7 @@ class ProductController (
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
-        val requestMall = mallService.validateMall(custId = user.custId, mallId = request.mallId)
+        val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = request.mallId)
 
         val requestMallPartner: Partner = requestMall.partners
             ?.find { it.partnerId == request.partnerId }

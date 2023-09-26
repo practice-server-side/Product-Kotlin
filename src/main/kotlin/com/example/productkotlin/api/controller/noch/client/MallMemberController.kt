@@ -5,8 +5,8 @@ import com.example.productkotlin.api.model.MallMember
 import com.example.productkotlin.api.model.MallMemberSession
 import com.example.productkotlin.api.repository.MallMemberRepository
 import com.example.productkotlin.api.repository.MallMemberSessionRepository
-import com.example.productkotlin.api.repository.MallRepository
 import com.example.productkotlin.api.service.CustomAuthenticationManagerService
+import com.example.productkotlin.api.service.NoSuchExceptionService
 import jakarta.validation.Valid
 import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
@@ -23,9 +23,9 @@ import java.util.*
 class MallMemberController(
     private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val mallMemberSessionRepository: MallMemberSessionRepository,
+    private val noSuchExceptionService: NoSuchExceptionService,
     private val mallMemberRepository: MallMemberRepository,
     private val passwordEncoder: PasswordEncoder,
-    private val mallRepository: MallRepository,
 ) {
 
     /**
@@ -37,8 +37,7 @@ class MallMemberController(
         @Valid @RequestBody request: MallMemberLoginIdCheckRequestDto,
     ): ResponseEntity<Any> {
 
-        val requestMall = mallRepository.findByMallKey(request.mallKey!!)
-            .orElseThrow { throw NoSuchElementException("존재하지 않는 몰입니다.") }
+        val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
 
         return ResponseEntity.ok(
             CheckLoginIdResponseDto(mallMemberRepository.existsByLoginIdAndMall(requestLoginId, requestMall))
@@ -55,8 +54,7 @@ class MallMemberController(
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
-        val requestMall = mallRepository.findByMallKey(request.mallKey!!)
-            .orElseThrow {throw NoSuchElementException("존재하지 않는 몰입니다.")}
+        val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
 
         if (mallMemberRepository.existsByLoginIdAndMall(request.loginId!!, requestMall)) {
             throw DuplicateKeyException("이미 사용중인 아이디 입니다.")
@@ -82,8 +80,7 @@ class MallMemberController(
         @Valid @RequestBody request: MallMemberLoginRequestDto
     ): ResponseEntity<Any> {
 
-        val requestMall = mallRepository.findByMallKey(request.mallKey)
-            .orElseThrow { throw NoSuchElementException("존재하지 않는 몰입니다.") }
+        val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
 
         if (!mallMemberRepository.existsByLoginIdAndMall(request.loginRequestDto.loginId!!, requestMall)) {
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
