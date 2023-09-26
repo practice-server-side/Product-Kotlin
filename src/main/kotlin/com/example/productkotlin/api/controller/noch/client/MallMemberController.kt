@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.controller.noch.admin
+package com.example.productkotlin.api.controller.noch.client
 
 import com.example.productkotlin.api.dto.*
 import com.example.productkotlin.api.model.MallMember
