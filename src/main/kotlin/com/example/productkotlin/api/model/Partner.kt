@@ -17,4 +17,4 @@ data class Partner (
     @ManyToOne
     @JoinColumn(name = "mallId", nullable = false)
     var mall: Mall,
-)
+): CommonDate()
