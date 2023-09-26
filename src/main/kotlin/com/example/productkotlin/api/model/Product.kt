@@ -17,4 +17,4 @@ data class Product (
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "partnerId")
     var partner: Partner? = null,
-)
+) : CommonDate()
