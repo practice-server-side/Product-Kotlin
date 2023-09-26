@@ -3,23 +3,19 @@ package com.example.productkotlin.api.controller.ch.admin
 import com.example.productkotlin.api.dto.PartnerDetailResponseDto
 import com.example.productkotlin.api.dto.PartnerListResponseDto
 import com.example.productkotlin.api.dto.PartnerRegisterRequestDto
+import com.example.productkotlin.api.dto.comoon.RequestDto
 import com.example.productkotlin.api.model.Partner
 import com.example.productkotlin.api.repository.PartnerRepository
 import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
 import java.net.URI
-import java.util.NoSuchElementException
 
 @RestController
 @RequestMapping("/api/ch/partner")
@@ -53,21 +49,27 @@ class PartnerController(
     }
 
     /**
-     * 몰의 파트너 리스트 조회 TODO : 검색조건 및 페이징 처리
+     * 몰의 파트너 리스트 조회
      */
     @GetMapping
     fun partnerList(
         @User user: CurrentCust,
         @RequestParam(value = "mallId") requestMallId: Long,
+        @Valid @ModelAttribute request: RequestDto,
     ): ResponseEntity<Any> {
+
+        val pageRequest = PageRequest.of(request.pageNumber, request.pageSize, Sort.Direction.DESC, "registerDate")
 
         val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = requestMallId)
 
-        val requestMallPartners = partnerRepository.findByMall(requestMall)
+        val response = partnerRepository.findByMall(requestMall, pageRequest)
 
         return ResponseEntity.ok(
             PartnerListResponseDto(
-                partners = requestMallPartners
+                pageNumber = response.number,
+                pageSize = response.size,
+                totalCount = response.totalElements,
+                partners = response
                     .map { mallPartner ->
                         PartnerListResponseDto.Partner(
                             partnerId = mallPartner.partnerId!!,
