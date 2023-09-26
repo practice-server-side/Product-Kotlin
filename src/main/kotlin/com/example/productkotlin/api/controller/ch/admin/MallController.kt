@@ -8,6 +8,7 @@ import com.example.productkotlin.api.model.Mall
 import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.MallRepository
 import com.example.productkotlin.api.service.MallService
+import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
@@ -18,6 +19,7 @@ import java.util.*
 @RestController
 @RequestMapping("/api/ch/mall")
 class MallController (
+    private val noSuchExceptionService: NoSuchExceptionService,
     private val mallRepository: MallRepository,
     private val custRepository: CustRepository,
     private val mallService: MallService,
@@ -32,8 +34,7 @@ class MallController (
         @Valid @RequestBody request: MallRegisterRequestDto,
     ): ResponseEntity<Any> {
 
-        val requestCust: Cust = custRepository.findById(user.custId)
-            .orElseThrow { NoSuchElementException("회원을 찾을 수 업습니다.") }
+        val requestCust: Cust = noSuchExceptionService.validateCust(user.custId)
 
         val newData = Mall(
             mallName = request.mallName!!,
@@ -57,7 +58,7 @@ class MallController (
         @PathVariable(value = "mallId") mallId: Long,
     ): ResponseEntity<Any> {
 
-        val requestMall = mallService.validateMall(custId = user.custId, mallId = mallId)
+        val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = mallId)
 
         return ResponseEntity.ok(
             MallDetailResponseDto(

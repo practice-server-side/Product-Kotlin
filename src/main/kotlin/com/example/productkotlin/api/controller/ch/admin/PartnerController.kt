@@ -5,7 +5,7 @@ import com.example.productkotlin.api.dto.PartnerListResponseDto
 import com.example.productkotlin.api.dto.PartnerRegisterRequestDto
 import com.example.productkotlin.api.model.Partner
 import com.example.productkotlin.api.repository.PartnerRepository
-import com.example.productkotlin.api.service.MallService
+import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
@@ -25,7 +25,7 @@ import java.util.NoSuchElementException
 @RequestMapping("/api/ch/partner")
 class PartnerController(
     private val partnerRepository: PartnerRepository,
-    private val mallService: MallService,
+    private val noSuchExceptionService: NoSuchExceptionService,
 ) {
 
     /**
@@ -39,7 +39,7 @@ class PartnerController(
 
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
-        val requestMall = mallService.validateMall(custId = user.custId, mallKey = request.mallKey)
+        val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = request.mallKey)
 
         val newData = Partner(
             partnerName = request.partnerName,
@@ -61,7 +61,7 @@ class PartnerController(
         @RequestParam(value = "mallId") requestMallId: Long,
     ): ResponseEntity<Any> {
 
-        val requestMall = mallService.validateMall(custId = user.custId, mallId = requestMallId)
+        val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = requestMallId)
 
         val requestMallPartners = partnerRepository.findByMall(requestMall)
 
@@ -89,7 +89,7 @@ class PartnerController(
         @RequestParam(value = "mallId") requestMallId: Long,
     ): ResponseEntity<Any> {
 
-        val requestMall = mallService.validateMall(custId = user.custId, mallId = requestMallId)
+        val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = requestMallId)
 
         val requestMallPartner: Partner = requestMall.partners
             ?.find { it.partnerId == requestPartnerId }
