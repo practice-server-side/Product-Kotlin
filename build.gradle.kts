@@ -35,6 +35,13 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
+	// querydsl 추가
+	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -53,4 +60,25 @@ tasks.withType<KotlinCompile> {
 
 tasks.withType<Test> {
 	useJUnitPlatform()
+}
+
+tasks {
+	withType<JavaCompile> {
+		options.annotationProcessorGeneratedSourcesDirectory = file("build/generated/sources/annotationProcessor/java/main")
+	}
+}
+
+
+
+tasks.withType<JavaCompile> {
+	options.generatedSourceOutputDirectory = file("build/generated/sources/annotationProcessor/java/main")
+}
+
+
+sourceSets {
+	main {
+		java {
+			srcDirs("src/main/kotlin", "build/generated/sources/annotationProcessor/java/main")
+		}
+	}
 }
