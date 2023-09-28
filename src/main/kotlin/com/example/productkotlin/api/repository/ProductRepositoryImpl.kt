@@ -7,8 +7,6 @@ class ProductRepositoryImpl(
     private val jpaQueryFactory: JPAQueryFactory,
 ) : ProductRepositoryCustom {
 //    override fun findBy(): List<Product> {
-//        return jpaQueryFactory.selectFrom()
+//        return jpaQueryFactory.selectFrom(QProduct)
 //    }
-//
-
 }
