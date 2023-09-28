@@ -3,9 +3,12 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
 	id("org.springframework.boot") version "3.1.3"
 	id("io.spring.dependency-management") version "1.1.3"
+
 	kotlin("jvm") version "1.8.22"
 	kotlin("plugin.spring") version "1.8.22"
 	kotlin("plugin.jpa") version "1.8.22"
+	kotlin("kapt") version "1.8.21"
+	idea
 }
 
 group = "com.example"
@@ -35,12 +38,10 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 
-	// querydsl 추가
-	implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
-	implementation("com.querydsl:querydsl-apt:5.0.0:jakarta")
-	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-	annotationProcessor("jakarta.persistence:jakarta.persistence-api")
-	annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	implementation ("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+	kapt ("com.querydsl:querydsl-apt:5.0.0:jakarta")
+	kapt ("jakarta.annotation:jakarta.annotation-api")
+	kapt ("jakarta.persistence:jakarta.persistence-api")
 
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
@@ -62,23 +63,10 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-tasks {
-	withType<JavaCompile> {
-		options.annotationProcessorGeneratedSourcesDirectory = file("build/generated/sources/annotationProcessor/java/main")
-	}
-}
-
-
-
-tasks.withType<JavaCompile> {
-	options.generatedSourceOutputDirectory = file("build/generated/sources/annotationProcessor/java/main")
-}
-
-
-sourceSets {
-	main {
-		java {
-			srcDirs("src/main/kotlin", "build/generated/sources/annotationProcessor/java/main")
-		}
+idea {
+	module {
+		val kaptMain = file("build/generated/source/kapt/main")
+		sourceDirs.add(kaptMain)
+		generatedSourceDirs.add(kaptMain)
 	}
 }
