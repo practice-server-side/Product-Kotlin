@@ -2,6 +2,7 @@ package com.example.productkotlin.api.controller.ch.admin
 
 import com.example.productkotlin.api.dto.ProductDetailResponseDto
 import com.example.productkotlin.api.dto.ProductRegisterRequestDto
+import com.example.productkotlin.api.dto.comoon.RequestDto
 import com.example.productkotlin.api.model.Partner
 import com.example.productkotlin.api.model.Product
 import com.example.productkotlin.api.repository.ProductRepository
@@ -10,6 +11,8 @@ import com.example.productkotlin.api.service.NoSuchExceptionService
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
@@ -57,7 +60,11 @@ class ProductController (
     @GetMapping
     fun productList(
         @User uesr: CurrentCust,
+        @Valid @ModelAttribute request: RequestDto,
     ): ResponseEntity<Any> {
+
+        val pageRequest = PageRequest.of(request.pageNumber, request.pageSize, Sort.Direction.DESC, "registerDate")
+
         return ResponseEntity.ok("")
     }
 
