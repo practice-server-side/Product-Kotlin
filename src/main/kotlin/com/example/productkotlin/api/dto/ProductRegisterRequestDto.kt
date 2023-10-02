@@ -12,4 +12,6 @@ data class ProductRegisterRequestDto (
     val partnerId: Long,
     @field:Min(1, message = "0 또는 공백일 수 없습니다.")
     val mallId: Long,
+    @field:Min(1, message = "0 또는 공백일 수 없습니다.")
+    val stock: Int,
 )

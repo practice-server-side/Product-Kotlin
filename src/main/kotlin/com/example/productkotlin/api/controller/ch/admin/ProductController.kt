@@ -1,8 +1,9 @@
 package com.example.productkotlin.api.controller.ch.admin
 
 import com.example.productkotlin.api.dto.ProductDetailResponseDto
+import com.example.productkotlin.api.dto.ProductListRequestDto
+import com.example.productkotlin.api.dto.ProductListResponseDto
 import com.example.productkotlin.api.dto.ProductRegisterRequestDto
-import com.example.productkotlin.api.dto.comoon.RequestDto
 import com.example.productkotlin.api.model.Partner
 import com.example.productkotlin.api.model.Product
 import com.example.productkotlin.api.repository.ProductRepository
@@ -12,7 +13,7 @@ import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import jakarta.validation.Valid
 import org.springframework.data.domain.PageRequest
-import org.springframework.data.domain.Sort
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder
@@ -46,7 +47,8 @@ class ProductController (
         val newData = Product(
             productName = request.productName,
             productPrice = request.productPrice,
-            partner = requestMallPartner
+            partner = requestMallPartner,
+            stock = request.stock
         )
 
         productRepository.save(newData)
@@ -55,17 +57,29 @@ class ProductController (
     }
 
     /**
-     * 상품 리스트 조회 TODO : 검색 조건 및 페이징 처리
+     * 상품 리스트 조회
      */
     @GetMapping
     fun productList(
         @User uesr: CurrentCust,
-        @Valid @ModelAttribute request: RequestDto,
+        @Valid @ModelAttribute request: ProductListRequestDto,
     ): ResponseEntity<Any> {
 
-        val pageRequest = PageRequest.of(request.pageNumber, request.pageSize, Sort.Direction.DESC, "registerDate")
+        val pageAble: Pageable = PageRequest.of(request.pageNumber, request.pageSize)
 
-        return ResponseEntity.ok("")
+        val response = productRepository.findByProduct(request, pageAble)
+
+        return ResponseEntity.ok(ProductListResponseDto(
+            pageSize = response.size,
+            pageNumber = response.number,
+            totalCount = response.totalElements,
+            products = response.map { product -> ProductListResponseDto.Product(
+                productId = product.productId!!,
+                productName = product.productName,
+                productPrice = product.productPrice,
+                stock = product.stock) }
+                .toList()
+        ))
     }
 
     /**
