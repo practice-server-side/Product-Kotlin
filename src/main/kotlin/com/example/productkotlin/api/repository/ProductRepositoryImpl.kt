@@ -2,6 +2,8 @@ package com.example.productkotlin.api.repository
 
 import com.example.productkotlin.api.dto.ProductListRequestDto
 import com.example.productkotlin.api.model.Product
+import com.example.productkotlin.api.model.QMall
+import com.example.productkotlin.api.model.QPartner
 import com.example.productkotlin.api.model.QProduct
 import com.querydsl.jpa.impl.JPAQueryFactory
 import io.micrometer.common.util.StringUtils
@@ -19,7 +21,10 @@ class ProductRepositoryImpl(
         }
 
         val productList: List<Product> = queryFactory.selectFrom(QProduct.product)
-            .where(QProduct.product.productName.like(request.productName))
+            .join(QProduct.product.partner).fetchJoin()
+            .join(QPartner.partner.mall).fetchJoin()
+            .join(QMall.mall.cust).fetchJoin()
+            .where(QProduct.product.productName.like("%${request.productName}%"))
             .offset(pageAble.offset)
             .limit(pageAble.pageSize.toLong())
             .fetch()
