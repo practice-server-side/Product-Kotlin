@@ -73,11 +73,13 @@ class ProductController (
             pageSize = response.size,
             pageNumber = response.number,
             totalCount = response.totalElements,
-            products = response.map { product -> ProductListResponseDto.Product(
-                productId = product.productId!!,
-                productName = product.productName,
-                productPrice = product.productPrice,
-                stock = product.stock) }
+            products = response
+                .map { product -> ProductListResponseDto.Product(
+                    productId = product.productId!!,
+                    productName = product.productName,
+                    productPrice = product.productPrice,
+                    stock = product.stock)
+                }
                 .toList()
         ))
     }
