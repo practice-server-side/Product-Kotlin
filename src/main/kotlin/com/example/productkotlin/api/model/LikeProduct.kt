@@ -9,8 +9,8 @@ data class LikeProduct (
     val likeProductId: Long = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "custId")
-    val cust: Cust,
+    @JoinColumn(name = "memberId")
+    val member: MallMember,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "productId")
