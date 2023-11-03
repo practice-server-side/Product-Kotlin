@@ -23,7 +23,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/noch/cust")
-class CustController(
+class NochCustController(
     private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
