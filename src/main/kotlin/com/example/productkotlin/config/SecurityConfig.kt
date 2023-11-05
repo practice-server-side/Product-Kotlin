@@ -25,7 +25,7 @@ class SecurityConfig {
         configuration.allowedHeaders = listOf("*")
         configuration.allowCredentials = true
         val source = UrlBasedCorsConfigurationSource()
-        source.registerCorsConfiguration("/api/ch/**", configuration)
+        source.registerCorsConfiguration("/api/**", configuration)
         return source
     }
 
