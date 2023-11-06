@@ -3,7 +3,7 @@ package com.example.productkotlin.api.model
 import jakarta.persistence.*
 
 @Entity
-data class LikeProduct (
+data class LikeProduct(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val likeProductId: Long = 0,
