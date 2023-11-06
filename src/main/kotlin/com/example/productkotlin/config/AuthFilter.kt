@@ -20,7 +20,7 @@ class AuthFilter(
     override fun doFilterInternal(
         request: HttpServletRequest,
         response: HttpServletResponse,
-        filterChain: FilterChain
+        filterChain: FilterChain,
     ) {
         val uri = request.requestURI
 
@@ -34,7 +34,7 @@ class AuthFilter(
         if (requestSessionId == null) {
             val responseDto = ErrorDetailsDto(
                 errorMessage = "로그인이 필요한 요청입니다.",
-                timeStamp = LocalDateTime.now().toString()
+                timeStamp = LocalDateTime.now().toString(),
             )
 
             errorHandler(response, responseDto)
@@ -47,7 +47,7 @@ class AuthFilter(
             if (mallMemberSession.isEmpty) {
                 val responseDto = ErrorDetailsDto(
                     errorMessage = "로그인이 필요한 요청입니다.",
-                    timeStamp = LocalDateTime.now().toString()
+                    timeStamp = LocalDateTime.now().toString(),
                 )
 
                 errorHandler(response, responseDto)
@@ -65,7 +65,7 @@ class AuthFilter(
             if (custSession.isEmpty) {
                 val responseDto = ErrorDetailsDto(
                     errorMessage = "로그인이 필요한 요청입니다.",
-                    timeStamp = LocalDateTime.now().toString()
+                    timeStamp = LocalDateTime.now().toString(),
                 )
 
                 errorHandler(response, responseDto)
@@ -82,12 +82,10 @@ class AuthFilter(
 
     private fun errorHandler(
         response: HttpServletResponse,
-        responseDto: ErrorDetailsDto
+        responseDto: ErrorDetailsDto,
     ) {
         response.contentType = "application/json;charset=UTF-8"
-
+        response.status = 401
         response.writer.write(objectMapper.writeValueAsString(responseDto))
     }
-
-
 }
