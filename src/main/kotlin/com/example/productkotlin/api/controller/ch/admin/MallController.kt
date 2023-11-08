@@ -18,7 +18,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/ch/mall")
-class MallController (
+class MallController(
     private val noSuchExceptionService: NoSuchExceptionService,
     private val mallRepository: MallRepository,
     private val custRepository: CustRepository,
@@ -31,21 +31,21 @@ class MallController (
     @PostMapping
     fun mallRegister(
         @User user: CurrentCust,
-        @Valid @RequestBody request: MallRegisterRequestDto,
+        @Valid @RequestBody
+        request: MallRegisterRequestDto,
     ): ResponseEntity<Any> {
-
         val requestCust: Cust = noSuchExceptionService.validateCust(user.custId)
 
         val newData = Mall(
             mallName = request.mallName!!,
             mallKey = UUID.randomUUID().toString(),
-            cust = requestCust
+            cust = requestCust,
         )
 
         mallRepository.save(newData)
 
         return ResponseEntity.ok(
-            MallRegisterResponseDto(mallId = newData.mallId)
+            MallRegisterResponseDto(mallId = newData.mallId),
         )
     }
 
@@ -57,16 +57,13 @@ class MallController (
         @User user: CurrentCust,
         @PathVariable(value = "mallId") mallId: Long,
     ): ResponseEntity<Any> {
-
         val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = mallId)
 
         return ResponseEntity.ok(
             MallDetailResponseDto(
                 mallName = requestMall.mallName,
-                mallKey = requestMall.mallKey
-            )
+                mallKey = requestMall.mallKey,
+            ),
         )
     }
-
-
 }
