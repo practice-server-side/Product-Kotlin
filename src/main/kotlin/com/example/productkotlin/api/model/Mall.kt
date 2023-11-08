@@ -3,7 +3,7 @@ package com.example.productkotlin.api.model
 import jakarta.persistence.*
 
 @Entity
-data class Mall (
+data class Mall(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var mallId: Long? = null,
@@ -19,5 +19,5 @@ data class Mall (
     var cust: Cust,
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "mall")
-    var partners: List<Partner>? = null
+    var partners: List<Partner>? = null,
 ) : CommonDate()
