@@ -33,8 +33,6 @@ class MallController(
 
         val response = mallRepository.findByCust(requestCust, pageable)
 
-        println("사이즈 : ${response.totalElements}")
-
         return ResponseEntity.ok(
             MallListResponseDto(
                 pageSize = response.size,
