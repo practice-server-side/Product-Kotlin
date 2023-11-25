@@ -21,11 +21,11 @@ import java.net.URI
 
 @RestController
 @RequestMapping("/api/ch/product")
-class ProductController (
+class ProductController(
     private val mallService: MallService,
     private val productRepository: ProductRepository,
     private val noSuchExceptionService: NoSuchExceptionService,
-){
+) {
 
     /**
      * 상품 등록
@@ -33,9 +33,9 @@ class ProductController (
     @PostMapping
     fun productRegister(
         @User user: CurrentCust,
-        @Valid @RequestBody request: ProductRegisterRequestDto,
+        @Valid @RequestBody
+        request: ProductRegisterRequestDto,
     ): ResponseEntity<Any> {
-
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
         val requestMall = noSuchExceptionService.validateMall(requestCustId = user.custId, requestMallId = request.mallId)
@@ -48,7 +48,7 @@ class ProductController (
             productName = request.productName,
             productPrice = request.productPrice,
             partner = requestMallPartner,
-            stock = request.stock
+            stock = request.stock,
         )
 
         productRepository.save(newData)
@@ -62,26 +62,30 @@ class ProductController (
     @GetMapping
     fun productList(
         @User uesr: CurrentCust,
-        @Valid @ModelAttribute request: ProductListRequestDto,
+        @Valid @ModelAttribute
+        request: ProductListRequestDto,
     ): ResponseEntity<Any> {
-
         val pageAble: Pageable = PageRequest.of(request.pageNumber, request.pageSize)
 
         val response = productRepository.findByProduct(request, pageAble)
 
-        return ResponseEntity.ok(ProductListResponseDto(
-            pageSize = response.size,
-            pageNumber = response.number,
-            totalCount = response.totalElements,
-            products = response
-                .map { product -> ProductListResponseDto.Product(
-                    productId = product.productId!!,
-                    productName = product.productName,
-                    productPrice = product.productPrice,
-                    stock = product.stock)
-                }
-                .toList()
-        ))
+        return ResponseEntity.ok(
+            ProductListResponseDto(
+                pageSize = response.size,
+                pageNumber = response.number,
+                totalCount = response.totalElements,
+                products = response
+                    .map { product ->
+                        ProductListResponseDto.Product(
+                            productId = product.productId!!,
+                            productName = product.productName,
+                            productPrice = product.productPrice,
+                            stock = product.stock,
+                        )
+                    }
+                    .toList(),
+            ),
+        )
     }
 
     /**
@@ -89,12 +93,11 @@ class ProductController (
      */
     @GetMapping("/{productId}")
     fun productDetail(
-        @User user:CurrentCust,
+        @User user: CurrentCust,
         @PathVariable(value = "productId") requestProductId: Long,
     ): ResponseEntity<Any> {
-
         val requestProduct = productRepository.findById(requestProductId)
-            .orElseThrow {throw NoSuchElementException("${requestProductId}에 해당하는 정보를 찾을 수 업습니다.") }
+            .orElseThrow { throw NoSuchElementException("${requestProductId}에 해당하는 정보를 찾을 수 업습니다.") }
 
         return ResponseEntity.ok(
             ProductDetailResponseDto(
@@ -102,9 +105,8 @@ class ProductController (
                 productName = requestProduct.productName,
                 productPrice = requestProduct.productPrice,
                 partnerName = requestProduct.partner!!.partnerName,
-                partnerId = requestProduct.partner!!.partnerId!!
-            )
+                partnerId = requestProduct.partner!!.partnerId!!,
+            ),
         )
     }
-
 }
