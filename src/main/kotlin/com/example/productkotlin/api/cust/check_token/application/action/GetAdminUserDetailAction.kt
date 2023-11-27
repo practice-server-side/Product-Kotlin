@@ -1,6 +1,6 @@
-package com.example.productkotlin.api.cust.application.action
+package com.example.productkotlin.api.cust.check_token.application.action
 
-import com.example.productkotlin.api.cust.application.port.`in`.GetAdminUserDetailUseCase
+import com.example.productkotlin.api.cust.check_token.application.port.`in`.GetAdminUserDetailUseCase
 import com.example.productkotlin.api.service.NoSuchExceptionService
 import org.springframework.stereotype.Component
 

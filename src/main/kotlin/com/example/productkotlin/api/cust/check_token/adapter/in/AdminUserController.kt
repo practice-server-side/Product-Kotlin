@@ -1,6 +1,6 @@
-package com.example.productkotlin.api.cust.adapter.`in`
+package com.example.productkotlin.api.cust.check_token.adapter.`in`
 
-import com.example.productkotlin.api.cust.application.port.`in`.GetAdminUserDetailUseCase
+import com.example.productkotlin.api.cust.check_token.application.port.`in`.GetAdminUserDetailUseCase
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import org.springframework.http.ResponseEntity
