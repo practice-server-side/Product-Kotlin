@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/api/ch/cust")
 @RestController
-class AdminUserController(
+class UsableTokenAdminUserController(
     private val getAdminUserDetailUseCase: GetAdminUserDetailUseCase,
 ) {
     @GetMapping

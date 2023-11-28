@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.controller.noch.admin
+package com.example.productkotlin.api.cust.no_check_token.adapter.`in`
 
 import com.example.productkotlin.api.dto.CheckLoginIdResponseDto
 import com.example.productkotlin.api.dto.CustJoinRequestDto
@@ -23,7 +23,7 @@ import java.util.*
 
 @RestController
 @RequestMapping("/api/noch/cust")
-class NochCustController(
+class DisableTokenAdminUserController(
     private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
@@ -35,10 +35,10 @@ class NochCustController(
      */
     @GetMapping("/{loginId}")
     fun checkCustLoginId(
-        @PathVariable(value = "loginId") requestLoginId: String
+        @PathVariable(value = "loginId") requestLoginId: String,
     ): ResponseEntity<Any> {
         return ResponseEntity.ok(
-            CheckLoginIdResponseDto(exists = custRepository.existsByLoginId(requestLoginId))
+            CheckLoginIdResponseDto(exists = custRepository.existsByLoginId(requestLoginId)),
         )
     }
 
@@ -48,9 +48,9 @@ class NochCustController(
     @PostMapping("/join")
     @Transactional
     fun custJoin(
-        @Valid @RequestBody request: CustJoinRequestDto
+        @Valid @RequestBody
+        request: CustJoinRequestDto,
     ): ResponseEntity<Any> {
-
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
         if (custRepository.existsByLoginId(request.loginId!!)) {
@@ -62,8 +62,8 @@ class NochCustController(
             loginPassword = passwordEncoder.encode(request.loginPassword!!),
             custName = request.userName!!,
             custPhone = request.userPhone!!,
-            custKey = UUID.randomUUID().toString()
-         )
+            custKey = UUID.randomUUID().toString(),
+        )
 
         custRepository.save(newData)
 
@@ -75,15 +75,15 @@ class NochCustController(
      */
     @PostMapping("/login")
     fun custLogin(
-        @Valid @RequestBody request: LoginRequestDto
+        @Valid @RequestBody
+        request: LoginRequestDto,
     ): ResponseEntity<Any> {
-
         if (!custRepository.existsByLoginId(request.loginId!!)) {
             throw NoSuchElementException("아이디 또는 비밀번호가 일치하지 않습니다.")
         }
 
         val authentication = customAuthenticationManagerService.authenticate(
-            UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword)
+            UsernamePasswordAuthenticationToken(request.loginId, request.loginPassword),
         )
 
         SecurityContextHolder.getContext().authentication = authentication
@@ -96,7 +96,7 @@ class NochCustController(
 
         val newData = CustSession(
             sessionId = UUID.randomUUID().toString(),
-            custId = authentication.credentials as Long
+            custId = authentication.credentials as Long,
         )
 
         custSessionRepository.save(newData)
