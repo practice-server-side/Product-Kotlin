@@ -1,4 +1,4 @@
-package com.example.productkotlin.api.cust.application.port.`in`
+package com.example.productkotlin.api.cust.check_token.application.port.`in`
 
 interface GetAdminUserDetailUseCase {
     fun getAdminUserDetail(currentCustId: Long): GetAdminUserDetailResponseDto

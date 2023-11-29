@@ -1,6 +1,6 @@
-package com.example.productkotlin.api.cust.adapter.`in`
+package com.example.productkotlin.api.cust.check_token.adapter.`in`
 
-import com.example.productkotlin.api.cust.application.port.`in`.GetAdminUserDetailUseCase
+import com.example.productkotlin.api.cust.check_token.application.port.`in`.GetAdminUserDetailUseCase
 import com.example.productkotlin.config.annotation.User
 import com.example.productkotlin.config.dto.CurrentCust
 import org.springframework.http.ResponseEntity
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController
 
 @RequestMapping("/api/ch/cust")
 @RestController
-class AdminUserController(
+class UsableTokenAdminUserController(
     private val getAdminUserDetailUseCase: GetAdminUserDetailUseCase,
 ) {
     @GetMapping
