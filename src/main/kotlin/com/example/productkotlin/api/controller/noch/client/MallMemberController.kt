@@ -1,5 +1,6 @@
 package com.example.productkotlin.api.controller.noch.client
 
+import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.GetCheckAdminUserLoginIdUseCase
 import com.example.productkotlin.api.dto.*
 import com.example.productkotlin.api.model.MallMember
 import com.example.productkotlin.api.model.MallMemberSession
@@ -34,13 +35,13 @@ class MallMemberController(
     @PostMapping("/{loginId}")
     fun checkMallMemberLoginId(
         @PathVariable(value = "loginId") requestLoginId: String,
-        @Valid @RequestBody request: MallMemberLoginIdCheckRequestDto,
+        @Valid @RequestBody
+        request: MallMemberLoginIdCheckRequestDto,
     ): ResponseEntity<Any> {
-
         val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
 
         return ResponseEntity.ok(
-            CheckLoginIdResponseDto(mallMemberRepository.existsByLoginIdAndMall(requestLoginId, requestMall))
+            GetCheckAdminUserLoginIdUseCase.CheckLoginIdResponseDto(mallMemberRepository.existsByLoginIdAndMall(requestLoginId, requestMall)),
         )
     }
 
@@ -49,9 +50,9 @@ class MallMemberController(
      */
     @PostMapping("/join")
     fun mallMemberJoin(
-        @Valid @RequestBody request: MallMemberJoinRequestDto,
+        @Valid @RequestBody
+        request: MallMemberJoinRequestDto,
     ): ResponseEntity<Any> {
-
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
         val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
@@ -64,7 +65,7 @@ class MallMemberController(
             loginId = request.loginId,
             loginPassword = passwordEncoder.encode(request.loginPassword!!),
             memberName = request.memberName!!,
-            mall = requestMall
+            mall = requestMall,
         )
 
         mallMemberRepository.save(newData)
@@ -77,9 +78,9 @@ class MallMemberController(
      */
     @GetMapping("/login")
     fun mallMemberLogin(
-        @Valid @RequestBody request: MallMemberLoginRequestDto
+        @Valid @RequestBody
+        request: MallMemberLoginRequestDto,
     ): ResponseEntity<Any> {
-
         val requestMall = noSuchExceptionService.validateMall(requestMallKey = request.mallKey!!)
 
         if (!mallMemberRepository.existsByLoginIdAndMall(request.loginRequestDto.loginId!!, requestMall)) {
@@ -88,7 +89,7 @@ class MallMemberController(
 
         val authentication = customAuthenticationManagerService.authenticate(
             UsernamePasswordAuthenticationToken(request.loginRequestDto.loginId, request.loginRequestDto.loginPassword),
-            requestMall
+            requestMall,
         )
 
         SecurityContextHolder.getContext().authentication = authentication
@@ -101,7 +102,7 @@ class MallMemberController(
 
         val newData = MallMemberSession(
             sessionId = UUID.randomUUID().toString(),
-            memberId = authentication.credentials as Long
+            memberId = authentication.credentials as Long,
         )
 
         mallMemberSessionRepository.save(newData)
