@@ -1,6 +1,7 @@
 package com.example.productkotlin.api.cust.no_check_token.adapter.`in`
 
 import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.GetCheckAdminUserLoginIdUseCase
+import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.PostAdminUserJoinUseCase
 import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.LoginRequestDto
 import com.example.productkotlin.api.dto.LoginResponseDto
@@ -25,6 +26,7 @@ import java.util.*
 @RequestMapping("/api/noch/cust")
 class DisableTokenAdminUserController(
     private val getCheckAdminUserLoginIdUseCase: GetCheckAdminUserLoginIdUseCase,
+    private val postAdminUserJoinUseCase: PostAdminUserJoinUseCase,
     private val customAuthenticationManagerService: CustomAuthenticationManagerService,
     private val custRepository: CustRepository,
     private val passwordEncoder: PasswordEncoder,
