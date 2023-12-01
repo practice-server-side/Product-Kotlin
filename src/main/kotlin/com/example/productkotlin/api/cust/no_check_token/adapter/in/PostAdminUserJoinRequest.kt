@@ -1,8 +1,8 @@
-package com.example.productkotlin.api.dto
+package com.example.productkotlin.api.cust.no_check_token.adapter.`in`
 
 import jakarta.validation.constraints.NotBlank
 
-data class CustJoinRequestDto (
+class PostAdminUserJoinRequest(
     @field:NotBlank(message = "아이디는 필수 입력 값입니다.")
     val loginId: String?,
     @field:NotBlank(message = "비밀번호는 필수 입력 값입니다.")
