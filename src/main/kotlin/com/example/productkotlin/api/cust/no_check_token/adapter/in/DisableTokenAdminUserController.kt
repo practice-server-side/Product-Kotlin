@@ -1,17 +1,15 @@
 package com.example.productkotlin.api.cust.no_check_token.adapter.`in`
 
 import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.GetCheckAdminUserLoginIdUseCase
+import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.PostAdminUserJoinCommand
 import com.example.productkotlin.api.cust.no_check_token.application.port.`in`.PostAdminUserJoinUseCase
-import com.example.productkotlin.api.dto.CustJoinRequestDto
 import com.example.productkotlin.api.dto.LoginRequestDto
 import com.example.productkotlin.api.dto.LoginResponseDto
-import com.example.productkotlin.api.model.Cust
 import com.example.productkotlin.api.model.CustSession
 import com.example.productkotlin.api.repository.CustRepository
 import com.example.productkotlin.api.repository.CustSessionRepository
 import com.example.productkotlin.api.service.CustomAuthenticationManagerService
 import jakarta.validation.Valid
-import org.springframework.dao.DuplicateKeyException
 import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
@@ -52,23 +50,18 @@ class DisableTokenAdminUserController(
     @Transactional
     fun adminUserJoin(
         @Valid @RequestBody
-        request: CustJoinRequestDto,
+        request: PostAdminUserJoinRequest,
     ): ResponseEntity<Any> {
         val selfLink = URI.create(ServletUriComponentsBuilder.fromCurrentRequest().toUriString())
 
-        if (custRepository.existsByLoginId(request.loginId!!)) {
-            throw DuplicateKeyException("이미 사용중인 아이디 입니다.")
-        }
-
-        val newData = Cust(
+        val command = PostAdminUserJoinCommand(
             loginId = request.loginId,
-            loginPassword = passwordEncoder.encode(request.loginPassword!!),
-            custName = request.userName!!,
-            custPhone = request.userPhone!!,
-            custKey = UUID.randomUUID().toString(),
+            loginPassword = request.loginPassword,
+            userName = request.userName,
+            userPhone = request.userPhone,
         )
 
-        custRepository.save(newData)
+        postAdminUserJoinUseCase.adminUserJoin(command)
 
         return ResponseEntity.created(selfLink).build()
     }
